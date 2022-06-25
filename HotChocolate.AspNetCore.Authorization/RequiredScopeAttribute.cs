@@ -4,9 +4,9 @@ using System.Reflection;
 
 namespace HotChocolate.AspNetCore.Authorization
 {
-    public class RequiredScopeAuthorizationAttribute : DescriptorAttribute
+    public class RequiredScopeAttribute : DescriptorAttribute
     {
-        public RequiredScopeAuthorizationAttribute(params string[] requiredScopes)
+        public RequiredScopeAttribute(params string[] requiredScopes)
         {
             Scopes = requiredScopes ?? throw new ArgumentNullException(nameof(requiredScopes));
         }

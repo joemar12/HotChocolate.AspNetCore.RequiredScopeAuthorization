@@ -6,6 +6,10 @@
     <Nullable>enable</Nullable>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Description>Adds scope verification middleware to HotChocolate.AspNetCore.Authorization</Description>
+    <RepositoryUrl>https://github.com/joemar12/HotChocolate.AspNetCore.RequiredScopeAuthorization</RepositoryUrl>
+    <PackageId>Custom.HotChocolate.AspNetCore.RequiredScopeAuthorization</PackageId>
+    <Authors>rameoj18</Authors>
+    <Version>1.0.2</Version>
   </PropertyGroup>
 
   <ItemGroup>
