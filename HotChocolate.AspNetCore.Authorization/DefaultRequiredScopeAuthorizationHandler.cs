@@ -23,8 +23,13 @@ namespace HotChocolate.AspNetCore.Authorization
             var requiredScopes = directive.Scopes ?? _config.GetValue<string>(directive.RequiredScopesConfigurationKey)
                 .Split(' ')
                 .ToList();
-            var foundScopes = requiredScopes.Intersect(userScopes);
-            if (foundScopes.Any())
+            if (requiredScopes is null || requiredScopes.Count < 1 || requiredScopes.All(x => string.IsNullOrEmpty(x)))
+            {
+                // can't validate if the required scopes are not provided so proceed
+                return AuthorizeResult.Allowed;
+            }
+            var hasScopes = requiredScopes.Intersect(userScopes).Any();
+            if (hasScopes)
             {
                 return AuthorizeResult.Allowed;
             }
@@ -36,10 +41,10 @@ namespace HotChocolate.AspNetCore.Authorization
             if (context.ContextData.TryGetValue(nameof(ClaimsPrincipal), out var obj)
                 && obj is ClaimsPrincipal p)
             {
-                var scopeVal = p.FindFirstValue(ClaimConstants.Scope);
-                if (scopeVal != null)
+                var foundScopes = p.FindAll(ClaimConstants.Scope).Union(p.FindAll(ClaimConstants.Scp)).ToList();
+                if (foundScopes != null)
                 {
-                    scopes = scopeVal.Split(" ").ToList();
+                    scopes = foundScopes.SelectMany(x => x.Value.Split(' ')).ToList();
                     return true;
                 }
             }
