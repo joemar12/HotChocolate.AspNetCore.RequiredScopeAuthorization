@@ -6,15 +6,17 @@ Currently, HotChocolate.AspNetCore.Authorization does not support scope verifica
 
 The attribute is in the same namespace as HotChocolate's Authorize
 
+First, register in services
+
+```C#
+  services.AddGraphQLServer()
+          .AddRequiredScopeAuthorization()
+```
+
+Then add the ```RequiredScope``` attribute in your queries/mutations.
 You can provide a list of scope names in the params
 
 ```C#
-  [RequiredScope("scope1", "scope2", "scope3")]
-  public class Query
-  {
-     ...
-  }
-  
   [RequiredScope("scope1", "scope2", "scope3")]
   public IQueryable<Dto> Sample([Service] IApplicationDbContext context)
   {
@@ -25,12 +27,6 @@ You can provide a list of scope names in the params
 or provide the configuration key
 
 ```C#
-  [RequiredScope(RequiredScopesConfigurationKey = "RequiredScopesConfigKey")]
-  public class Query
-  {
-     ...
-  }
-  
   [RequiredScope(RequiredScopesConfigurationKey = "RequiredScopesConfigKey")]
   public IQueryable<Dto> Sample([Service] IApplicationDbContext context)
   {
